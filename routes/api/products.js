@@ -7,13 +7,12 @@ const ROLES_LIST = require('../../config/roles.cofig');
 
 router.route('/')
     .get(fecthProducts)
-    .post(verifyJwt, verifyRoles(ROLES_LIST.Admin), addProduct)
-    .put(verifyJwt, verifyRoles(ROLES_LIST.Admin), editProduct)
-    .delete(verifyJwt, verifyRoles(ROLES_LIST.Admin), removeProduct);
+    .post(verifyJwt, verifyRoles(ROLES_LIST.SuperAdmin, ROLES_LIST.Admin), addProduct)
+    .put(verifyJwt, verifyRoles(ROLES_LIST.SuperAdmin, ROLES_LIST.Admin), editProduct)
+    .delete(verifyJwt, verifyRoles(ROLES_LIST.SuperAdmin, ROLES_LIST.Admin), removeProduct);
 
 router.route('/sort')
     .get(sortProduct);
-
 
 
 module.exports = router;

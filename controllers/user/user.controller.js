@@ -2,6 +2,8 @@ const { getAllUsers } = require('../../services/user/getUser.service');
 const { deleteUserService } = require('../../services/user/deleteUser.service');
 const ROLES_LIST = require('../../config/roles.cofig');
 const { updateDetails } = require('../../services/user/updateUser.service');
+const {assignRole} = require('../../services/user/assignRole.service');
+const {deleteRole} = require('../../services/user/deleteRole.service');
 
 const getAllUser = async (req, res) => {
     const users = await getAllUsers();
@@ -52,7 +54,7 @@ const deleteUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { id } = req.params;
-    const adminRole = ROLES_LIST.Admin
+    const adminRole = ROLES_LIST.Admin || ROLES_LIST.SuperAdmin;
     const rolesArray = req.roles;
     const reqId = req.id;
 
@@ -80,10 +82,46 @@ const updateUser = async (req, res) => {
 
 }
 
+const assignUserRole = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+
+
+    if(!req.body){
+        res.status(400).json({error: 'Invalid request'});
+        return;
+    }
+
+    const { error, success } = await assignRole(id, role);
+
+    if (error) {
+        res.status(204).json({ error });
+        return;
+    }
+
+    res.status(200).json({ success });
+};
+
+const deleteUserRole = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    const { error, success } = await deleteRole(id, role);
+
+    if (error) {
+        res.status(204).json({ error });
+        return;
+    }
+
+    res.status(200).json({ success });
+};
+
 module.exports = {
     getAllUser,
     deleteUser,
     updateUser,
+    assignUserRole,
+    deleteUserRole
 }
 
 

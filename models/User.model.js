@@ -16,7 +16,8 @@ const UserSchema = new Schema({
             type: Number,
             default: parseInt(process.env.USER_ROLE_ID),
         },
-        Admin: Number
+        Admin: Number,
+        SuperAdmin: Number
     },
     email: String,
     phoneNumber: String,

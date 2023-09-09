@@ -7,7 +7,7 @@ const addToCart = async (userId, productId, quantity) => {
     try {
         const user = await User.findById(userId).exec();
         if(!user) return {error: 'User not found'};
-        
+
         // Find the user's cart or create a new one if it doesn't exist
         let cart = await Cart.findOne({ userId });
 
@@ -32,7 +32,6 @@ const addToCart = async (userId, productId, quantity) => {
         const newItem = {
             productId,
             quantity,
-            price,
             total: quantity * price,
         };
 
