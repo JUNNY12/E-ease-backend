@@ -41,15 +41,20 @@ This README provides an overview of the REST API for E-ease and instructions for
 
 1. Clone the repository.
 2. Install the required packages using the following command:
+
    ```bash
    npm install
    ```
-3. Start the server:
-   ```bash
-   npm start
-   ```
-
+3. Create an `.env` file in your project root folder and add your variables. See `.env.sample` for assistance.
 ---
+
+### Usage
+1. To start the server locally run this command
+
+  ```bash
+   npm run dev
+  ``` 
+
 
 ## Endpoints
 
