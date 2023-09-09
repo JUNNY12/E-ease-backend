@@ -198,7 +198,7 @@ To authenticate a user, make a `POST` request to the `/auth` endpoint with the f
 
 ##### Example Usage
 You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `POST` request to the 
-`/register` endpoint.
+`/auth` endpoint.
 
 ##### Example Usage (Using `fetch`)
 
@@ -235,7 +235,7 @@ try {
 
 #### Endpoint
 
-##### Get /logout
+##### GET /logout
 
 #### Request
 To log out a user, make a `GET` request to the `/logout` endpoint.
@@ -246,8 +246,9 @@ To log out a user, make a `GET` request to the `/logout` endpoint.
 
 ###### NOTE: Remember to delete the accessToken from the client side
 
-#### Example Fetch request:
-
+#### Example Usage
+You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `GET` request to the 
+`/logout` endpoint.
 ##### Example Usage (Using `fetch`)
 
 ```javascript
@@ -296,8 +297,9 @@ try {
 - If there is no refresh token in the cookies or the refresh token is invalid, you will receive a response with a status code of `401` Unauthorized or `403` Forbidden depending on the situation.
 
 
-#### Example Fetch request:
-
+#### Example Usage
+You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `GET` request to the 
+`/refresh` endpoint.
 ##### Example Usage (Using `fetch`)
 
 ```javascript
