@@ -12,7 +12,7 @@ This README provides an overview of the REST API for E-ease and instructions for
   - [Register User](#register-user)
   - [Login User](#login-user)
   - [Logout User](#logout-user)
-  - [Refresh User Access Token]('refresh-access-token')
+  - [Refresh User Access Token]('#refresh-access-token')
   - [Get All Users](#get-all-users)
   - [Delete User](#delete-user)
   - [Update User](#update-user)
