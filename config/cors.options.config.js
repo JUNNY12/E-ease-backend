@@ -2,7 +2,7 @@ const allowedOrigins = require('./allowed.origin.config');
 
 const corsOptions = {
     origin:(origin, callback) => {
-        if(allowedOrigins.indexOf(origin) === -1 || !origin) {
+        if(allowedOrigins.indexOf(origin) === -1) {
             callback(null, true)
         }
         else {
@@ -10,6 +10,7 @@ const corsOptions = {
         }
     },
     optionSuccessStatus: 200,
+    credentials:true
 };
 
 module.exports = corsOptions;

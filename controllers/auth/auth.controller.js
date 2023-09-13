@@ -13,11 +13,17 @@ const loginController = async (req, res) => {
         return res.status(401).json({ message: response.error });
     }
 
-    const { accessToken, refreshToken , userInfo} = response;
+    const { accessToken, refreshToken, userInfo } = response;
 
-    res.cookie('jwt', refreshToken, { httpOnly: true , sameSite: 'none' , maxAge: 24 * 60 * 60 * 1000}); // secure: true in production
+    res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: true,
+    }); // for production
+
+    // console.log(res)
     res.json({ accessToken, userInfo });
-
 }
 
 module.exports = {

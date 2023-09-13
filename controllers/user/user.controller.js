@@ -1,4 +1,4 @@
-const { getAllUsers } = require('../../services/user/getUser.service');
+const { getAllUsers, getUserById } = require('../../services/user/getUser.service');
 const { deleteUserService } = require('../../services/user/deleteUser.service');
 const ROLES_LIST = require('../../config/roles.cofig');
 const { updateDetails } = require('../../services/user/updateUser.service');
@@ -41,6 +41,30 @@ const getAllUser = async (req, res) => {
     res.status(200).json(usersArray);
 };
 
+const getUser = async (req, res) => {
+    const { id } = req.params;
+    const adminRole = ROLES_LIST.Admin || ROLES_LIST.SuperAdmin;
+    const rolesArray = req.roles;
+    const reqId = req.id;
+
+    const isAdmin = rolesArray.includes(adminRole);
+
+    if (!isAdmin && reqId !== id) {
+        res.status(403).json({ error: 'You are not authorized to perform this action' });
+        return;
+    }
+
+    const {error, user} = await getUserById(id);
+
+    if(error){
+        res.status(204).json({error});
+        return;
+    }
+
+    res.status(200).json(user);
+    
+}
+
 const deleteUser = async (req, res) => {
     const { id } = req.body;
     const { result, error } = await deleteUserService(id);
@@ -66,7 +90,7 @@ const updateUser = async (req, res) => {
     }
 
     if (isAdmin || reqId === id) {
-        const { error, success } = await updateDetails(id, req.body);
+        const { error, success} = await updateDetails(id, req.body);
 
         if (error) {
             res.status(204).json({ error });
@@ -118,6 +142,7 @@ const deleteUserRole = async (req, res) => {
 
 module.exports = {
     getAllUser,
+    getUser,
     deleteUser,
     updateUser,
     assignUserRole,

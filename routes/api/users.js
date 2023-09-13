@@ -1,4 +1,4 @@
-const {getAllUser, deleteUser, updateUser, assignUserRole, deleteUserRole}  = require('../../controllers/user/user.controller')
+const {getAllUser, deleteUser, updateUser, assignUserRole, deleteUserRole, getUser}  = require('../../controllers/user/user.controller')
 const express = require('express');
 const router = express.Router();
 const {verifyRoles} = require('../../middleware/verify.roles');
@@ -10,7 +10,8 @@ router.route('/')
 
 
 router.route('/:id')
-.put(updateUser);
+.put(updateUser)
+.get(getUser);
 
 router.route('/role/:id')
 .put(verifyRoles(ROLES_LIST.SuperAdmin),assignUserRole)

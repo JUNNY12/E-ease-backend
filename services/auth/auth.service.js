@@ -22,7 +22,7 @@ const loginUser = async (username, password) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '45s' }
         )
         const refreshToken = jwt.sign(
             {
@@ -38,7 +38,7 @@ const loginUser = async (username, password) => {
         return { accessToken, refreshToken, userInfo:{_id, username, email, createdAt}};
     }
     else {
-        return { error: 'Authentication failed' };
+        return { error: 'Authentication failed: Password is incorrect' };
     }
 
 

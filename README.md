@@ -45,16 +45,18 @@ This README provides an overview of the REST API for E-ease and instructions for
    ```bash
    npm install
    ```
+
 3. Create an `.env` file in your project root folder and add your variables. See `.env.sample` for assistance.
+
 ---
 
 ### Usage
+
 1. To start the server locally run this command
 
-  ```bash
-   npm run dev
-  ``` 
-
+```bash
+ npm run dev
+```
 
 ## Endpoints
 
@@ -74,7 +76,6 @@ To register a new user, make a `POST` request to the `/register` endpoint with t
   "email": "user@example.com",
   "password": "example_password"
 }
-
 ```
 
 #### Response
@@ -109,40 +110,45 @@ To register a new user, make a `POST` request to the `/register` endpoint with t
 ```
 
 #### Example Usage
-You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `POST` request to the 
+
+You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `POST` request to the
 `/register` endpoint.
+
 ##### Example Usage (Using `fetch`)
 
 ```javascript
 
 const registerUser = async () => {
   const url = "http://localhost:3500/register";
-  const data = {
+  let responseData;
+  let errorMessage;
+
+    const data = {
     username: "example_user",
     email: "user@example.com",
     password: "example_password",
   };
 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
 
-    if (!response.ok) {
-      const errorMessage = await response.json();
-      throw new Error(errorMessage.message);
+        if (!response.ok) {
+            errorMessage = await response.json();
+            throw new Error(errorMessage.message);
+        }
+
+        responseData = await response.json();
+    } catch (error:any) {
+        errorMessage = error.message;
     }
 
-    const responseData = await response.json();
-    console.log("User registered:", responseData);
-
-  } catch (error) {
-    console.error("Error registering user:", error.message);
-  }
+    return { responseData, errorMessage };
 };
 
 ```
@@ -195,40 +201,47 @@ To authenticate a user, make a `POST` request to the `/auth` endpoint with the f
 }
 ```
 
-
 ##### Example Usage
-You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `POST` request to the 
+
+You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `POST` request to the
 `/auth` endpoint.
 
 ##### Example Usage (Using `fetch`)
 
 ```javascript
-try {
-  const url = 'http://localhost:3500/auth';
-  const data = {
-    username: 'example_user',
-    password: 'example_password'
+
+const loginUser = async () => {
+  const url = "http://localhost:3500/auth";
+  let responseData;
+  let errorMessage;
+
+    const data = {
+    username: "example_user",
+    password: "example_password",
   };
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            credentials:'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
 
-  if (!response.ok) {
-    const errorMessage = await response.json();
-    throw new Error(errorMessage.message);
-  }
+        if (!response.ok) {
+            errorMessage = await response.json();
+            throw new Error(errorMessage.message);
+        }
 
-  const responseData = await response.json();
-  console.log('User authenticated:', responseData);
-} catch (error) {
-  console.error('Error authenticating user:', error.message);
-}
+        responseData = await response.json();
+    } catch (error:any) {
+        errorMessage = error.message;
+    }
 
+    return { responseData, errorMessage };
+};
 ```
 
 ### Logout User
@@ -238,6 +251,7 @@ try {
 ##### GET /logout
 
 #### Request
+
 To log out a user, make a `GET` request to the `/logout` endpoint.
 
 #### Response
@@ -247,30 +261,40 @@ To log out a user, make a `GET` request to the `/logout` endpoint.
 ###### NOTE: Remember to delete the accessToken from the client side
 
 #### Example Usage
-You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `GET` request to the 
+
+You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `GET` request to the
 `/logout` endpoint.
+
 ##### Example Usage (Using `fetch`)
 
 ```javascript
 
-try {
-  const url = 'http://localhost:3500/logout';
+ export const logoutUser = async () => {
+     const url = "http://localhost:3500/logout";
 
-  const response = await fetch(url, {
-    method: 'GET',
-    credentials: 'include' // This ensures that cookies are sent along with the request
-  });
+    let responseData;
+    let errorMessage;
 
-  if (!response.ok) {
-    const errorMessage = await response.json();
-    throw new Error(errorMessage.message);
-  }
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-  console.log('User logged out successfully');
-} catch (error) {
-  console.error('Error logging out user:', error.message);
+        if (!response.ok) {
+            errorMessage = await response.json();
+            throw new Error(errorMessage.message);
+        }
+
+        responseData = await response.json();
+    } catch (error:any) {
+        errorMessage = error.message;
+    }
+
+    return { responseData, errorMessage };
 }
-
 ```
 
 ### Refresh User Access Token
@@ -280,48 +304,56 @@ try {
 ##### GET /refresh
 
 #### Request
+
 - To refresh the access token, make a `GET` request to the `/refresh` endpoint. The request should include the refresh token in the cookies.
 
 #### Response
 
 - If the refresh token is valid and belongs to a user, you will receive a response with a status code of `200 OK` and a new access token in the JSON body:
 
-
 ```json
 {
   "accessToken": "new_access_token"
 }
-
 ```
 
 - If there is no refresh token in the cookies or the refresh token is invalid, you will receive a response with a status code of `401` Unauthorized or `403` Forbidden depending on the situation.
 
-
 #### Example Usage
-You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `GET` request to the 
+
+You can use tools like Postman, cURL, or any HTTP client library in your preferred programming language to make a `GET` request to the
 `/refresh` endpoint.
+
 ##### Example Usage (Using `fetch`)
 
 ```javascript
 
-try {
-  const url = 'http://localhost:3500/refresh';
+  export const refreshToken = async () => {
+   const url = "http://localhost:3500/refresh";
 
-  const response = await fetch(url, {
-    method: 'GET',
-    credentials: 'include' // This ensures that cookies are sent along with the request
-  });
+    let responseData;
+    let errorMessage;
 
-  if (!response.ok) {
-    throw new Error('Failed to refresh access token');
-  }
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-  const responseData = await response.json();
-  const newAccessToken = responseData.accessToken;
+        if (!response.ok) {
+            errorMessage = await response.json();
+            throw new Error(errorMessage.message);
+        }
 
-  console.log('New access token:', newAccessToken);
-} catch (error) {
-  console.error('Error refreshing access token:', error.message);
+        responseData = await response.json();
+
+    } catch (error:any) {
+        errorMessage = error.message;
+    }
+
+    return { responseData, errorMessage };
 }
-
 ```
