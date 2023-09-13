@@ -1,7 +1,5 @@
 # E-ease backend
 
-# README for REST API
-
 This README provides an overview of the REST API for E-ease and instructions for its easy usage.
 
 ## Table of Contents
