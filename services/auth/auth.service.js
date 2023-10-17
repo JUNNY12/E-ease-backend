@@ -8,21 +8,21 @@ const loginUser = async (username, password) => {
     if (!foundUser) {
         return { error: 'User does not exist' };
     }
-
+    
     const isPasswordCorrect = await bcrypt.compare(password, foundUser.password);
 
     if (isPasswordCorrect) {
-        const roles = Object.values(foundUser.roles);
+        const userRoles = Object.values(foundUser.roles).filter(Boolean);
         const accessToken = jwt.sign(
             {
                 "UserInfo": {
                     "id": foundUser._id,
                     "username": foundUser.username,
-                    "roles": roles
+                    "roles": userRoles
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '45s' }
+            { expiresIn: '5m' }
         )
         const refreshToken = jwt.sign(
             {
@@ -32,16 +32,19 @@ const loginUser = async (username, password) => {
             { expiresIn: '1d' }
         );
 
+        const date = new Date()
+        const now = date.getTime();
+        
         foundUser.refreshToken = refreshToken;
+        foundUser.signedIn = now;
+
         const result = await foundUser.save();
-        const {_id, username, email, createdAt } = result;
-        return { accessToken, refreshToken, userInfo:{_id, username, email, createdAt}};
+        const {_id, username, email, createdAt, roles } = result;
+        return { accessToken, refreshToken, userInfo:{_id, username, email, createdAt, roles}};
     }
     else {
         return { error: 'Authentication failed: Password is incorrect' };
     }
-
-
 
 }
 

@@ -23,9 +23,11 @@ const getUserById = async (id) => {
             firstName: user.firstName,
             lastName: user.lastName,
             address: user.address,
+            createdAt:user.createdAt,
+            signedIn:user.signedIn,
         }
     }
-
+    
 }
 
 module.exports = { getAllUsers, getUserById };

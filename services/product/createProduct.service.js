@@ -12,7 +12,8 @@ const createProduct = async ({
     yearOfRelease,
     pageNumber,
     authorName,
-    aboutAuthor
+    aboutAuthor,
+    language,
 }) => {
     try {
         const slug = slugify(title, { lower: true });
@@ -28,10 +29,12 @@ const createProduct = async ({
             publisher,
             yearOfRelease,
             pageNumber,
+            language,
             author: {
                 authorName,
                 aboutAuthor
-            }
+            },
+            image
         });
 
         return product;

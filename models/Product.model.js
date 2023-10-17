@@ -15,8 +15,10 @@ const ProductSchema = new Schema({
     },
     quantity: Number,
     image: {
-        type: String,
-        required: true
+        url:String,
+        public_id:String,
+        secure_url:String,
+        asset_id:String,
     },
     category: String,
     averageRating: {
@@ -26,6 +28,7 @@ const ProductSchema = new Schema({
     yearOfRelease: Number,
     publisher: String,
     pageNumber: Number,
+    language:String,
     author: {
         authorName: String,
         aboutAuthor: String,

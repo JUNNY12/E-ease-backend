@@ -33,6 +33,9 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    signedIn:{
+        type: Date,
+    },
     refreshToken: String,
 },
     {

@@ -42,10 +42,13 @@ const getAllUser = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-    const { id } = req.params;
+    const {id} = req.params;
     const adminRole = ROLES_LIST.Admin || ROLES_LIST.SuperAdmin;
     const rolesArray = req.roles;
     const reqId = req.id;
+
+    // console.log(reqId)
+    // console.log(req.params)
 
     const isAdmin = rolesArray.includes(adminRole);
 
@@ -54,7 +57,7 @@ const getUser = async (req, res) => {
         return;
     }
 
-    const {error, user} = await getUserById(id);
+    const {error, user} = await getUserById(req.params.id);
 
     if(error){
         res.status(204).json({error});

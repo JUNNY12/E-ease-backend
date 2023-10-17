@@ -14,16 +14,9 @@ const loginController = async (req, res) => {
     }
 
     const { accessToken, refreshToken, userInfo } = response;
-
-    res.cookie('jwt', refreshToken, {
-        httpOnly: true,
-        sameSite: 'none',
-        maxAge: 24 * 60 * 60 * 1000,
-        secure: true,
-    }); // for production
-
+    
     // console.log(res)
-    res.json({ accessToken, userInfo });
+    res.json({ accessToken, userInfo , refreshToken});
 }
 
 module.exports = {

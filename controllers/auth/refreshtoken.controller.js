@@ -1,38 +1,39 @@
-const jwt = require('jsonwebtoken');    
+const jwt = require('jsonwebtoken');
 const User = require('../../models/User.model');
 
 const handleRefreshToken = async (req, res) => {
-    const cookies = req.cookies;
+    const { refreshToken } = req.body;
 
-    if (!cookies.jwt) return res.sendStatus(401);
-    const refreshToken = cookies.jwt;
+    if (!refreshToken) return res.sendStatus(401);
 
-    const foundUser = await User.findOne({ refreshToken }).exec();
+    const foundUser = await User.findOne({ refreshToken });
     if (!foundUser) return res.sendStatus(403);
-
+    
+    // Verify the refresh token
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
-            if (err || decoded.username !== foundUser.username) return res.sendStatus(403);
-            const roles = Object.values(foundUser.roles);
-
+            if (err || decoded.username !== foundUser.username) {
+                return res.sendStatus(403);
+            }
             const accessToken = jwt.sign(
                 {
-                    "UserInfo": {
-                        "id": foundUser._id,
-                        "username": foundUser.username,
-                        "roles": roles
-                    }
+                    UserInfo: {
+                        id: foundUser._id,
+                        username: foundUser.username,
+                        roles: Object.values(foundUser.roles),
+                    },
                 },
                 process.env.ACCESS_TOKEN_SECRET,
                 {
-                    expiresIn: '45s'
+                    expiresIn: '5m',
                 }
-            )
+            );
+
             res.json({ accessToken });
         }
-    )
+    );
 }
 
-module.exports = {handleRefreshToken}
+module.exports = { handleRefreshToken }

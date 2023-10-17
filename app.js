@@ -5,6 +5,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const {limiter} = require('./middleware/limiter');
+
 const corsOptions = require('./config/cors.options.config');
 const connectDB = require('./config/db.config');
 const verifyJWT = require('./middleware/verify.jwt');
@@ -25,11 +26,10 @@ app.use('/logout', require('./routes/logout'));
 
 app.use('/products', require('./routes/api/products'));
 app.use('/reviews', require('./routes/api/reviews'));
+app.use('/upload', require('./routes/api/upload'));
 
 app.use(verifyJWT);
 app.use('/users', require('./routes/api/users'));
 app.use('/carts', require('./routes/api/cart'));
-
-
 
 module.exports = app;

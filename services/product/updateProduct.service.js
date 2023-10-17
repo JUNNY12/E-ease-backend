@@ -1,11 +1,23 @@
 const Product = require('../../models/Product.model');
-
+const slugify = require('slugify');
 const updateProduct = async (productId, productData) => {
     try {
-        const product = await Product.findOneAndUpdate(
-            { _id: productId },
-            { $set: productData },
-            { new: true }
+        // Generate a new slug from the title in productData
+        const newSlug = slugify(productData.title, {
+            lower: true
+        });
+
+        const product = await Product.findOneAndUpdate({
+                _id: productId
+            }, {
+                $set: {
+                    ...productData,
+                    slug: newSlug
+                }
+            }, // Update the slug field
+            {
+                new: true
+            }
         ).exec();
 
         if (!product) {
@@ -26,4 +38,6 @@ const updateProduct = async (productId, productData) => {
     }
 };
 
-module.exports = { updateProduct };
+module.exports = {
+    updateProduct
+};
