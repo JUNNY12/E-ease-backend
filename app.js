@@ -5,12 +5,16 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const {limiter} = require('./middleware/limiter');
+const {errorHandler} = require('./middleware/errorHandler');
+const {logger} = require('./middleware/logEvents');
 
 const corsOptions = require('./config/cors.options.config');
 const connectDB = require('./config/db.config');
 const verifyJWT = require('./middleware/verify.jwt');
 
 connectDB();
+
+app.use(logger);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,5 +35,8 @@ app.use('/upload', require('./routes/api/upload'));
 app.use(verifyJWT);
 app.use('/users', require('./routes/api/users'));
 app.use('/carts', require('./routes/api/cart'));
+app.use('/shippingAddress', require('./routes/api/shippingAddress'));
+
+app.use(errorHandler);
 
 module.exports = app;

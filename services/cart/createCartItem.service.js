@@ -26,7 +26,7 @@ const addToCart = async (userId, productId, quantity) => {
                 error: 'Product not found',
             };
         }
-
+        
         const price = product.price;
 
         const newItem = {
@@ -34,7 +34,7 @@ const addToCart = async (userId, productId, quantity) => {
             quantity,
             total: quantity * price,
         };
-
+        
         const existingItemIndex = cart.items.findIndex((item) => item.productId == productId);
 
         if (existingItemIndex > -1) {

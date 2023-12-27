@@ -2,7 +2,6 @@ const Cart = require("../../models/Cart.model");
 const User = require("../../models/User.model");
 
 const updateCart = async (userId, cartData) => {
-    
     try {
         const user = await User.findById(userId).exec();
 
@@ -21,7 +20,7 @@ const updateCart = async (userId, cartData) => {
                 subTotal: 0,
             });
         }
-
+        
         if(cart.items && cart.items.length > 0) {
             cart.items.forEach((item) => {
                 if (cartData.items.findIndex((cartItem) => cartItem.productId == item.productId) === -1) {
@@ -29,7 +28,7 @@ const updateCart = async (userId, cartData) => {
                 }
             });
         }
-
+        
         cart.items = [...cartData.items];
 
         // Calculate the new subTotal
@@ -38,6 +37,8 @@ const updateCart = async (userId, cartData) => {
         }, 0);
 
         await cart.save();
+
+        console.log(cart)
 
         return {
             cart,

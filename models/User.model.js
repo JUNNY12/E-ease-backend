@@ -27,13 +27,17 @@ const UserSchema = new Schema({
         street: String,
         city: String,
         state: String,
-        zip: String
+        zip: String,
+    },
+    shippingAddress: {
+        type: Schema.Types.ObjectId,
+        ref: 'ShippingAddress'
     },
     createdAt: {
         type: Date,
         default: Date.now
     },
-    signedIn:{
+    signedIn: {
         type: Date,
     },
     refreshToken: String,

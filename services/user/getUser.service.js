@@ -23,6 +23,7 @@ const getUserById = async (id) => {
             firstName: user.firstName,
             lastName: user.lastName,
             address: user.address,
+            shippingAddress: user.shippingAddress,
             createdAt:user.createdAt,
             signedIn:user.signedIn,
         }
