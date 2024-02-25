@@ -27,6 +27,8 @@ app.use('/register', require('./routes/register'), limiter);
 app.use('/auth', require('./routes/auth'), limiter);
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
+app.use('/resetPassword', require('./routes/resetPassword'));
+app.use('/requestPasswordReset', require('./routes/requestPasswordReset'));
 
 app.use('/products', require('./routes/api/products'));
 app.use('/reviews', require('./routes/api/reviews'));

@@ -1,6 +1,7 @@
 const User = require('../../models/User.model');
 const registerUser = require('../../services/auth/register.service');
 
+
 const registerController = async (req, res) => {
     const { username, email, password } = req.body;
 
