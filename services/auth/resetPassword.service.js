@@ -7,7 +7,10 @@ const resetPassword = async (userId, token, Password) => {
     let passwordResetToken = await Token.findOne({ userId }).exec();
 
     if (!token) {
-        return { message: 'Invalid or expired token' }
+        return {
+            status: 400,
+            message: 'Invalid or expired token'
+        }
     }
 
     console.log(passwordResetToken.token);
@@ -15,18 +18,18 @@ const resetPassword = async (userId, token, Password) => {
     const isValid = await bycrypt.compare(token, passwordResetToken.token);
 
     if (!isValid) {
-        return { message: 'Invalid or expired token' }
+        return { message: 'Invalid or expired token', status: 400 }
     }
     const bycryptSalt = process.env.BCRYPT_SALT;
     const hash = await bycrypt.hash(Password, Number(bycryptSalt));
-    
+
     await User.updateOne(
         { _id: userId },
         { $set: { password: hash } },
         { new: true }
     );
 
-    const user = await User.findById({_id:userId});
+    const user = await User.findById({ _id: userId });
 
     sendEmail(
         user.email,
@@ -39,7 +42,7 @@ const resetPassword = async (userId, token, Password) => {
 
     await passwordResetToken.deleteOne();
 
-    return { message: 'Password reset successfull' }
+    return { message: 'Password reset successfull', status: 200 }
 }
 
 module.exports = resetPassword;
