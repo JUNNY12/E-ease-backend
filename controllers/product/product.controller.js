@@ -34,6 +34,7 @@ const getTopProducts = async (req, res) => {
 
     res.status(200).json(products);
 };
+
 const fecthProducts = async (req, res) => {
     const products = await getProducts();
 
@@ -158,7 +159,7 @@ const searchProduct = async (req, res) => {
     const {
         query
     } = req.body;
-
+    
     try {
         const products = await searchProducts(query);
         res.json(products);

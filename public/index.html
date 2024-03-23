@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-ease-backend</title>
+</head>
+
+<body>
+    <main>
+        <section>
+            <h1>Database Connection Status</h1>
+            <p>Connected: <span id="status"></span></p>
+            <p>Current Date: <span id="date"></span></p>
+            <p>Connection Time: <span id="connection-time"></span></p>
+        </section>
+    </main>
+
+    <script>
+        fetch('/status')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').textContent = data.connected ? 'Yes' : 'No';
+                document.getElementById('date').textContent = data.date;
+
+                const connectionTime = new Date() - new Date(data.date);
+                setInterval(() => {
+                    const elapsed = new Date() - new Date(data.date) + connectionTime;
+                    const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+                    document.getElementById('connection-time').textContent = `${hours}h ${minutes}m ${seconds}s`;
+                }, 1000);
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+
+</html>
